@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Campus Electronics  | Buy & Order services</title>
+        <link rel="stylesheet" href="assets/style.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <!--Header/Navbar-->
+        <header class="navbar">
+            <div class="logo">
+                 <h2><span class="highlight">Campus</span> Electronics</h2>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="cart.html">Cart</a>
+                <a href="login.html">Login</a>
+                <a href="register.html">Register</a>
+            </nav>
+        </header>
+     <!--Hero section--> 
+     <section class="hero">
+        <div class="hero-text">
+            <h1>Shop smart. Save time. Stay on Campus</h1>
+            <p>Discover the best deals on laptops,phones,charges and accessories 
+                all available within your university. No more long trips to Nairobi! 
+            </p>
+            <a href="#shop" class="btn hero-btn">Start Shopping</a>
+        </div>
+     </section>
+     <!--product catalog-->
+     <main class="container" id="Shop">
+        <h2 class="section-title">Available products</h2>
+        <div id="products" class="products">
+            <!--product will load here dynamically from main.js-->
+        </div>
+     </main>
+       <footer class="footer">
+        <p>© 2025 Campus Electronics | Designed by <strong>Eddah Kemuma and Scholar Waweru Wamboi</strong></p>
+        <p class="small">Empowering students with affordable and tech trusted solutions</p>
+        <script src="assets/main.js"></script>
+        <script>
+            //load products when homepage opens
+            document.addEventListener("DOMContentLoaded", loadproducts);
+        </script>
+    </body>
+</html>
