@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - LuxeShop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .filters {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-group label {
+            color: white;
+            font-weight: 500;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:hover, .filter-group input:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        .product-card:nth-child(odd) { animation-delay: 0.1s; }
+        .product-card:nth-child(even) { animation-delay: 0.2s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ff4757;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-info h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin: 0.5rem 0;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-rating {
+            color: #ffa502;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: #667eea;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .old-price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart, .view-details {
+            flex: 1;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .view-details {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .add-to-cart:hover, .view-details:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-group select, .filter-group input {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">LuxeShop</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="product.html">Products</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="admin.html">Admin</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Our Premium Collection</h1>
+            <p>Discover the finest products curated just for you</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>Category:</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="home">Home & Living</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Sort By:</label>
+                <select id="sortFilter">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Search:</label>
+                <input type="text" id="searchInput" placeholder="Search products...">
+            </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <div class="product-card" data-category="fashion">
+                <div class="product-image">
+                    👔
+                    <div class="sale-badge">20% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Fashion</div>
+                    <h3>Premium Blazer</h3>
+                    <div class="product-rating">★★★★★</div>
+                    <p class="product-description">Elegant business wear perfect for any professional setting</p>
+                    <div class="product-price">$199.99 <span class="old-price">$249.99</span></div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="fashion">
+                <div class="product-image">👟</div>
+                <div class="product-info">
+                    <div class="product-category">Fashion</div>
+                    <h3>Sport Sneakers</h3>
+                    <div class="product-rating">★★★★☆</div>
+                    <p class="product-description">Comfortable and stylish for everyday wear</p>
+                    <div class="product-price">$89.99</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">
+                    👜
+                    <div class="sale-badge">15% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Accessories</div>
+                    <h3>Luxury Handbag</h3>
+                    <div class="product-rating">★★★★★</div>
+                    <p class="product-description">Designer collection piece with premium leather</p>
+                    <div class="product-price">$299.99 <span class="old-price">$349.99</span></div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="electronics">
+                <div class="product-image">⌚</div>
+                <div class="product-info">
+                    <div class="product-category">Electronics</div>
+                    <h3>Smart Watch</h3>
+                    <div class="product-rating">★★★★★</div>
+                    <p class="product-description">Latest technology with health tracking features</p>
+                    <div class="product-price">$349.99</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="fashion">
+                <div class="product-image">👗</div>
+                <div class="product-info">
+                    <div class="product-category">Fashion</div>
+                    <h3>Summer Dress</h3>
+                    <div class="product-rating">★★★★☆</div>
+                    <p class="product-description">Light and breezy perfect for warm weather</p>
+                    <div class="product-price">$79.99</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="electronics">
+                <div class="product-image">
+                    🎧
+                    <div class="sale-badge">30% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Electronics</div>
+                    <h3>Wireless Headphones</h3>
+                    <div class="product-rating">★★★★★</div>
+                    <p class="product-description">Premium sound quality with noise cancellation</p>
+                    <div class="product-price">$149.99 <span class="old-price">$199.99</span></div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">👓</div>
+                <div class="product-info">
+                    <div class="product-category">Accessories</div>
+                    <h3>Designer Sunglasses</h3>
+                    <div class="product-rating">★★★★☆</div>
+                    <p class="product-description">UV protection with stylish frames</p>
+                    <div class="product-price">$129.99</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="home">
+                <div class="product-image">🕯️</div>
+                <div class="product-info">
+                    <div class="product-category">Home & Living</div>
+                    <h3>Aromatherapy Candles</h3>
+                    <div class="product-rating">★★★★★</div>
+                    <p class="product-description">Hand-poured with natural essential oils</p>
+                    <div class="product-price">$39.99</div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="view-details">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const categoryFilter = document.getElementById('categoryFilter');
+        const searchInput = document.getElementById('searchInput');
+        const productsGrid = document.getElementById('productsGrid');
+        const products = document.querySelectorAll('.product-card');
+
+        categoryFilter.addEventListener('change', filterProducts);
+        searchInput.addEventListener('input', filterProducts);
+
+        function filterProducts() {
+            const category = categoryFilter.value;
+            const searchTerm = searchInput.value.toLowerCase();
+
+            products.forEach(product => {
+                const productCategory = product.dataset.category;
+                const productName = product.querySelector('h3').textContent.toLowerCase();
+                
+                const categoryMatch = category === 'all' || productCategory === category;
+                const searchMatch = productName.includes(searchTerm);
+
+                if (categoryMatch && searchMatch) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.textContent = 'Added! ✓';
+                this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                setTimeout(() => {
+                    this.textContent = 'Add to Cart';
+                    this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
